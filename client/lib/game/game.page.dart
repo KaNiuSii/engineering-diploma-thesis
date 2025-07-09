@@ -1,5 +1,6 @@
+import 'package:client/settings/settings.controller.dart';
 import 'package:client/widgets/app_scaffold.dart';
-import 'package:client/widgets/chess_board.dart';
+import 'package:client/game/chess_board.dart';
 import 'package:client/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,8 +15,14 @@ class GamePage extends GetView<GameController> {
       body: Row(
         children: [
           Expanded(
-            child: GetBuilder<GameController>(
-              builder: (_) => Center(child: ChessBoard(game: controller.game)),
+            child: Center(
+              child: Obx(
+                () => ChessBoard(
+                  game: controller.game,
+                  colorScheme:
+                      Get.find<SettingsController>().selectedColorScheme.value,
+                ),
+              ),
             ),
           ),
         ],

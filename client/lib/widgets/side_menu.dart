@@ -12,7 +12,7 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   bool _hovered = false;
 
-  static const double _collapsed = 64;
+  static const double _collapsed = 57;
   static const double _expanded = 240;
 
   @override

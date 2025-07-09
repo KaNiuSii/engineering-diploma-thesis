@@ -10,7 +10,7 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
-  Get.put(SettingsController());
+  Get.put(SettingsController(), permanent: true);
   runApp(const KWChessApp());
 }
 

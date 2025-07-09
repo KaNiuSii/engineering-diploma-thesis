@@ -1,3 +1,5 @@
+import 'package:client/settings/board_color_scheme.dart';
+import 'package:client/settings/color_scheme_preview.dart';
 import 'package:client/widgets/app_scaffold.dart';
 import 'package:client/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,28 @@ class SettingsPage extends GetView<SettingsController> {
                     title: const Text('Dark Mode'),
                     value: controller.isDark.value,
                     onChanged: controller.toggleTheme,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 32, bottom: 8),
+                  child: Text(
+                    'Chess board color',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                Obx(
+                  () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        boardColorSchemes.map((scheme) {
+                          final isSelected =
+                              controller.selectedColorScheme.value == scheme;
+                          return ColorSchemePreview(
+                            scheme: scheme,
+                            selected: isSelected,
+                            onTap: () => controller.changeColorScheme(scheme),
+                          );
+                        }).toList(),
                   ),
                 ),
               ],

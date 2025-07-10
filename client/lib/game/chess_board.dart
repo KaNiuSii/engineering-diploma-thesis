@@ -7,7 +7,7 @@ class ChessBoard extends StatelessWidget {
     super.key,
     required this.game,
     required this.colorScheme,
-    this.orientationWhite = true, // set orientation
+    this.orientationWhite = true,
   });
 
   final ch.Chess game;
@@ -32,7 +32,7 @@ class ChessBoard extends StatelessWidget {
       itemBuilder: (_, index) {
         final int rank = 7 - index ~/ 8;
         final int file = index % 8;
-        final bool dark = (rank + file) % 2 == 1;
+        final bool dark = (rank + file) % 2 == 0;
         return Container(color: dark ? colorScheme.dark : colorScheme.light);
       },
     );
@@ -102,8 +102,41 @@ class ChessBoard extends StatelessWidget {
         final piece = game.get(square);
         if (piece == null) return const SizedBox.shrink();
 
-        // Assuming piece widgets: you need to implement your own mapping from piece to widget
-        return Center(child: Text('${piece.color}${piece.type}'));
+        String imagePath = '';
+        switch (piece.type) {
+          case ch.PieceType.KING:
+            imagePath =
+                'assets/pieces/${piece.color == ch.Color.WHITE ? 'white' : 'black'}_king.png';
+            break;
+          case ch.PieceType.QUEEN:
+            imagePath =
+                'assets/pieces/${piece.color == ch.Color.WHITE ? 'white' : 'black'}_queen.png';
+            break;
+          case ch.PieceType.ROOK:
+            imagePath =
+                'assets/pieces/${piece.color == ch.Color.WHITE ? 'white' : 'black'}_rook.png';
+            break;
+          case ch.PieceType.BISHOP:
+            imagePath =
+                'assets/pieces/${piece.color == ch.Color.WHITE ? 'white' : 'black'}_bishop.png';
+            break;
+          case ch.PieceType.KNIGHT:
+            imagePath =
+                'assets/pieces/${piece.color == ch.Color.WHITE ? 'white' : 'black'}_knight.png';
+            break;
+          case ch.PieceType.PAWN:
+            imagePath =
+                'assets/pieces/${piece.color == ch.Color.WHITE ? 'white' : 'black'}_pawn.png';
+            break;
+        }
+
+        return Center(
+          child: Image.asset(
+            scale: piece.type == ch.PieceType.PAWN ? 0.18 : 0.15,
+            imagePath,
+            filterQuality: FilterQuality.none,
+          ),
+        );
       },
     );
   }

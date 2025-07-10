@@ -19,13 +19,28 @@ const List<BoardColorScheme> boardColorSchemes = [
     dark: Color(0xFFB58863),
   ),
   BoardColorScheme(
-    name: "Green",
-    light: Color(0xFFEEEED2),
-    dark: Color(0xFF769656),
+    name: "Bubblegum",
+    light: Color(0xFF5EABD6),
+    dark: Color(0xFFFFB4B4),
   ),
   BoardColorScheme(
-    name: "Blue",
-    light: Color(0xFFE0E9F3),
-    dark: Color(0xFF4682B4),
+    name: "Night",
+    light: Color(0xFF483AA0),
+    dark: Color(0xFF0E2148),
+  ),
+  BoardColorScheme(
+    name: "Royal",
+    light: Color(0xFFFFF6E9),
+    dark: Color(0xFF8174A0),
+  ),
+  BoardColorScheme(
+    name: "Forest",
+    light: Color(0xFF859F3D),
+    dark: Color(0xFF31511E),
+  ),
+  BoardColorScheme(
+    name: "Sky",
+    light: Color(0xFFDFF2EB),
+    dark: Color(0xFF7AB2D3),
   ),
 ];

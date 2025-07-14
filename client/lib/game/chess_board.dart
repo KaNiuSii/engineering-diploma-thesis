@@ -237,9 +237,9 @@ class _ChessBoardState extends State<ChessBoard> {
                             widget.orientationWhite
                                 ? files[col]
                                 : files.reversed.toList()[col],
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.black,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: widget.colorScheme.labels,
                             ),
                           ),
                         ),
@@ -251,9 +251,9 @@ class _ChessBoardState extends State<ChessBoard> {
                             widget.orientationWhite
                                 ? '${8 - row}'
                                 : '${row + 1}',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.black,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: widget.colorScheme.labels,
                             ),
                           ),
                         ),

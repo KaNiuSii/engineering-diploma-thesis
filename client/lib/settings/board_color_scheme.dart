@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class BoardColorScheme {
   final Color light;
   final Color dark;
@@ -9,6 +11,8 @@ class BoardColorScheme {
   final Color dragDot; // small dot shown on every legal target
   final Color check; // king in check (light red)
   final Color mate; // king mated (dark red)
+
+  final Color labels;
 
   final String name;
 
@@ -20,6 +24,7 @@ class BoardColorScheme {
     required this.dragDot,
     required this.check,
     required this.mate,
+    required this.labels,
     required this.name,
   });
 }
@@ -34,6 +39,7 @@ const List<BoardColorScheme> boardColorSchemes = [
     dragDot: Color(0xFFFFEB3B), // pure yellow
     check: Color(0xFFFF7043), // orange-red
     mate: Color(0xFFD32F2F), // deep red
+    labels: Colors.black,
   ),
 
   BoardColorScheme(
@@ -45,6 +51,7 @@ const List<BoardColorScheme> boardColorSchemes = [
     dragDot: Color(0xFFFFF176),
     check: Color(0xFFFF6F61), // pink-coral
     mate: Color(0xFFE91E63), // vivid pink
+    labels: Colors.black,
   ),
 
   BoardColorScheme(
@@ -56,6 +63,7 @@ const List<BoardColorScheme> boardColorSchemes = [
     dragDot: Color(0xFFFFEB3B),
     check: Color(0xFFFF5252),
     mate: Color(0xFFD50000),
+    labels: Colors.white,
   ),
 
   BoardColorScheme(
@@ -67,6 +75,7 @@ const List<BoardColorScheme> boardColorSchemes = [
     dragDot: Color(0xFFFFF176),
     check: Color(0xFFFF7043),
     mate: Color(0xFFD32F2F),
+    labels: Colors.black,
   ),
 
   BoardColorScheme(
@@ -78,6 +87,7 @@ const List<BoardColorScheme> boardColorSchemes = [
     dragDot: Color(0xFFFFF176),
     check: Color(0xFFFF7043),
     mate: Color(0xFFD32F2F),
+    labels: Colors.black,
   ),
 
   BoardColorScheme(
@@ -89,5 +99,6 @@ const List<BoardColorScheme> boardColorSchemes = [
     dragDot: Color(0xFFFFF176),
     check: Color(0xFFFF5252),
     mate: Color(0xFFD50000),
+    labels: Colors.black,
   ),
 ];

@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:chess/chess.dart' as ch;
 import 'package:client/settings/board_color_scheme.dart';
 
-/// Chess board widget with **working drag‑and‑drop**.
-///
-/// Key changes:
-/// * Each tile is a **single DragTarget**; the piece sits *inside* it as a
-///   Draggable, so hit‑testing works.
-/// * Hover overlay appears because the target always receives pointer events.
-/// * Debug output prints for every hover legality test.
-/// * Uses the same `ch.Chess` instance you pass in – external controllers stay
-///   in sync.
 class ChessBoard extends StatefulWidget {
   const ChessBoard({
     super.key,
@@ -28,7 +19,9 @@ class ChessBoard extends StatefulWidget {
 }
 
 class _ChessBoardState extends State<ChessBoard> {
-  /* ─────────────────── utilities ─────────────────── */
+  String? _lastFrom;
+  String? _lastTo;
+  final List<String> _dragTargets = [];
 
   String _indexToSquare(int index) {
     final rank = widget.orientationWhite ? 7 - index ~/ 8 : index ~/ 8;
@@ -50,12 +43,15 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   void _makeMove(String from, String to) {
-    if (widget.game.move({'from': from, 'to': to, 'promotion': 'q'}) != null) {
-      setState(() {});
+    final moved = widget.game.move({'from': from, 'to': to, 'promotion': 'q'});
+    if (moved != null) {
+      setState(() {
+        _lastFrom = from;
+        _lastTo = to;
+        _dragTargets.clear();
+      });
     }
   }
-
-  /* ─────────────────── build ─────────────────── */
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +67,23 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   /* ─────────────────── board grid ─────────────────── */
-
   Widget _buildBoard(double tile) {
+    final bool inCheck = widget.game.in_check;
+    final bool inMate = widget.game.in_checkmate;
+
+    String? kingSquare;
+    if (inCheck || inMate) {
+      final ch.Color sideToMove = widget.game.turn;
+      for (int i = 0; i < 64; i++) {
+        final sq = _indexToSquare(i);
+        final p = widget.game.get(sq);
+        if (p != null && p.type == ch.PieceType.KING && p.color == sideToMove) {
+          kingSquare = sq;
+          break;
+        }
+      }
+    }
+
     return GridView.builder(
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
@@ -87,62 +98,123 @@ class _ChessBoardState extends State<ChessBoard> {
         final dark = (rank + file) % 2 == 0;
         final piece = widget.game.get(square);
 
+        final isLastMove = square == _lastFrom || square == _lastTo;
+        final isDragTarget = _dragTargets.contains(square);
+        final isKingInDanger = square == kingSquare;
+
         return DragTarget<String>(
           onWillAcceptWithDetails: (details) {
             final from = details.data;
-            final legal = widget.game
+            return widget.game
                 .moves({'square': from, 'verbose': true})
                 .any((m) => m['to'] == square);
-            debugPrint('Hover $from ➜ $square; legal=$legal');
-            return legal;
           },
           onAcceptWithDetails: (d) => _makeMove(d.data, square),
-          builder:
-              (context, candidate, _) => Stack(
-                children: [
-                  Container(
-                    width: tile,
-                    height: tile,
-                    color:
-                        dark
-                            ? widget.colorScheme.dark
-                            : widget.colorScheme.light,
-                  ),
-                  if (candidate.isNotEmpty)
-                    Container(
-                      width: tile,
-                      height: tile,
-                      color: Colors.yellow.withOpacity(0.35),
-                    ),
-                  if (piece != null)
-                    Center(
-                      child: Draggable<String>(
-                        data: square,
-                        dragAnchorStrategy: childDragAnchorStrategy,
-                        feedback: SizedBox.square(
-                          dimension: tile,
-                          child: Image.asset(
-                            _assetFor(piece),
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                          ),
-                        ),
-                        childWhenDragging: const SizedBox.shrink(),
-                        child: Image.asset(
-                          _assetFor(piece),
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                        ),
-                      ),
-                    ),
-                ],
+          builder: (context, candidate, _) {
+            // layers build bottom‑up
+            final List<Widget> layers = [
+              Container(
+                width: tile,
+                height: tile,
+                color:
+                    dark ? widget.colorScheme.dark : widget.colorScheme.light,
               ),
+            ];
+
+            if (isLastMove) {
+              layers.add(
+                Container(
+                  width: tile,
+                  height: tile,
+                  color: Colors.lightGreen.withOpacity(0.35),
+                ),
+              );
+            }
+
+            if (isKingInDanger) {
+              final color =
+                  inMate
+                      ? Colors.red.withOpacity(0.55) // dark red
+                      : Colors.redAccent.withOpacity(0.45); // light red
+              layers.add(Container(width: tile, height: tile, color: color));
+            }
+
+            if (isDragTarget) {
+              layers.add(
+                Center(
+                  child: Container(
+                    width: tile * 0.28,
+                    height: tile * 0.28,
+                    decoration: const BoxDecoration(
+                      color: Colors.yellow,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            if (candidate.isNotEmpty) {
+              layers.add(
+                Container(
+                  width: tile,
+                  height: tile,
+                  color: Colors.yellow.withOpacity(0.35),
+                ),
+              );
+            }
+
+            if (piece != null) {
+              layers.add(
+                Center(child: _buildDraggablePiece(piece, square, tile)),
+              );
+            }
+
+            return Stack(children: layers);
+          },
         );
       },
     );
   }
 
-  /* ─────────────────── labels ─────────────────── */
+  Widget _buildDraggablePiece(ch.Piece piece, String square, double tile) {
+    final img = Image.asset(
+      _assetFor(piece),
+      fit: BoxFit.contain,
+      filterQuality: FilterQuality.none,
+    );
+
+    final draggable = Draggable<String>(
+      key: ValueKey(square),
+      data: square,
+      dragAnchorStrategy: childDragAnchorStrategy,
+      feedback: SizedBox.square(dimension: tile, child: img),
+      childWhenDragging: const SizedBox.shrink(),
+      onDragStarted: () {
+        final targets =
+            widget.game
+                .moves({'square': square, 'verbose': true})
+                .map((m) => m['to'] as String)
+                .toList();
+        setState(() {
+          _dragTargets
+            ..clear()
+            ..addAll(targets);
+        });
+      },
+      onDragEnd: (_) => setState(() => _dragTargets.clear()),
+      child: img,
+    );
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 180),
+      switchInCurve: Curves.easeOutBack,
+      switchOutCurve: Curves.easeInBack,
+      transitionBuilder:
+          (child, anim) => ScaleTransition(scale: anim, child: child),
+      child: draggable,
+    );
+  }
 
   Widget _buildLabels() {
     const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];

@@ -126,7 +126,7 @@ class _ChessBoardState extends State<ChessBoard> {
                 Container(
                   width: tile,
                   height: tile,
-                  color: Colors.lightGreen.withOpacity(0.35),
+                  color: widget.colorScheme.lastMove.withOpacity(0.35),
                 ),
               );
             }
@@ -134,8 +134,8 @@ class _ChessBoardState extends State<ChessBoard> {
             if (isKingInDanger) {
               final color =
                   inMate
-                      ? Colors.red.withOpacity(0.55) // dark red
-                      : Colors.redAccent.withOpacity(0.45); // light red
+                      ? widget.colorScheme.check.withOpacity(0.55) // dark red
+                      : widget.colorScheme.mate.withOpacity(0.45); // light red
               layers.add(Container(width: tile, height: tile, color: color));
             }
 
@@ -145,8 +145,8 @@ class _ChessBoardState extends State<ChessBoard> {
                   child: Container(
                     width: tile * 0.28,
                     height: tile * 0.28,
-                    decoration: const BoxDecoration(
-                      color: Colors.yellow,
+                    decoration: BoxDecoration(
+                      color: widget.colorScheme.dragDot,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -159,7 +159,7 @@ class _ChessBoardState extends State<ChessBoard> {
                 Container(
                   width: tile,
                   height: tile,
-                  color: Colors.yellow.withOpacity(0.35),
+                  color: widget.colorScheme.hover.withOpacity(0.35),
                 ),
               );
             }
@@ -239,7 +239,7 @@ class _ChessBoardState extends State<ChessBoard> {
                                 : files.reversed.toList()[col],
                             style: const TextStyle(
                               fontSize: 10,
-                              color: Colors.grey,
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -253,7 +253,7 @@ class _ChessBoardState extends State<ChessBoard> {
                                 : '${row + 1}',
                             style: const TextStyle(
                               fontSize: 10,
-                              color: Colors.grey,
+                              color: Colors.black,
                             ),
                           ),
                         ),

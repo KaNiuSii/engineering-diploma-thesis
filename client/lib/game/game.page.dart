@@ -1,4 +1,5 @@
 import 'package:client/game/chess_board.dart';
+import 'package:client/game/control_panel.dart';
 import 'package:client/settings/settings.controller.dart';
 import 'package:client/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,13 @@ class GamePage extends GetView<GameController> {
                   game: controller.game,
                   colorScheme:
                       Get.find<SettingsController>().selectedColorScheme.value,
+                  madeMove: controller.madeMove,
+                  orientationWhite: controller.whiteAtBottom.value,
                 ),
               ),
             ),
           ),
+          ControlPanel(),
         ],
       ),
     );

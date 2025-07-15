@@ -8,11 +8,13 @@ class ChessBoard extends StatefulWidget {
     required this.game,
     required this.colorScheme,
     this.orientationWhite = true,
+    required this.madeMove,
   });
 
   final ch.Chess game;
   final BoardColorScheme colorScheme;
   final bool orientationWhite;
+  final Function madeMove;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -44,13 +46,12 @@ class _ChessBoardState extends State<ChessBoard> {
 
   void _makeMove(String from, String to) {
     final moved = widget.game.move({'from': from, 'to': to, 'promotion': 'q'});
-    if (moved != null) {
-      setState(() {
-        _lastFrom = from;
-        _lastTo = to;
-        _dragTargets.clear();
-      });
-    }
+    setState(() {
+      _lastFrom = from;
+      _lastTo = to;
+      _dragTargets.clear();
+    });
+    widget.madeMove();
   }
 
   @override

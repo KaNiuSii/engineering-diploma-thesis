@@ -7,6 +7,7 @@ class ChessBoard extends StatefulWidget {
     super.key,
     required this.game,
     required this.colorScheme,
+    required this.historyCount, //only for obx xd
     this.orientationWhite = true,
     required this.madeMove,
   });
@@ -15,6 +16,8 @@ class ChessBoard extends StatefulWidget {
   final BoardColorScheme colorScheme;
   final bool orientationWhite;
   final Function madeMove;
+
+  final int historyCount;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -45,7 +48,7 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   void _makeMove(String from, String to) {
-    final moved = widget.game.move({'from': from, 'to': to, 'promotion': 'q'});
+    widget.game.move({'from': from, 'to': to, 'promotion': 'q'});
     setState(() {
       _lastFrom = from;
       _lastTo = to;
@@ -67,8 +70,11 @@ class _ChessBoardState extends State<ChessBoard> {
     );
   }
 
-  /* ─────────────────── board grid ─────────────────── */
   Widget _buildBoard(double tile) {
+    if (widget.game.fen == ch.Chess.DEFAULT_POSITION) {
+      _lastFrom = null;
+      _lastTo = null;
+    }
     final bool inCheck = widget.game.in_check;
     final bool inMate = widget.game.in_checkmate;
 
@@ -90,6 +96,7 @@ class _ChessBoardState extends State<ChessBoard> {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 8,
+        childAspectRatio: 1,
       ),
       itemCount: 64,
       itemBuilder: (_, index) {
@@ -144,8 +151,8 @@ class _ChessBoardState extends State<ChessBoard> {
               layers.add(
                 Center(
                   child: Container(
-                    width: tile * 0.28,
-                    height: tile * 0.28,
+                    width: tile * 0.12,
+                    height: tile * 0.12,
                     decoration: BoxDecoration(
                       color: widget.colorScheme.dragDot,
                       shape: BoxShape.circle,

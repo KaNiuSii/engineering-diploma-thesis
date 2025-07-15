@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:chess/chess.dart' as ch;
 
 class GameController extends GetxController {
-  final ch.Chess _game = ch.Chess();
-  ch.Chess get game => _game;
+  final Rx<ch.Chess> game = ch.Chess().obs;
 
   final RxBool playerWhite = true.obs;
 
@@ -20,7 +19,8 @@ class GameController extends GetxController {
 
   void reset() {
     historyVersion.value = 0;
-    _game.reset();
+    game.value.reset();
+    game.value = ch.Chess();
     update();
   }
 }

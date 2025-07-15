@@ -18,11 +18,12 @@ class GamePage extends GetView<GameController> {
             child: Center(
               child: Obx(
                 () => ChessBoard(
-                  game: controller.game,
+                  game: controller.game.value,
                   colorScheme:
                       Get.find<SettingsController>().selectedColorScheme.value,
                   madeMove: controller.madeMove,
                   orientationWhite: controller.whiteAtBottom.value,
+                  historyCount: controller.historyVersion.value,
                 ),
               ),
             ),

@@ -24,7 +24,6 @@ class ControlPanel extends StatelessWidget {
           Text('Controls', style: textTheme.titleLarge),
           const SizedBox(height: 12),
 
-          /// choose side
           Obx(
             () => DropdownButton<bool>(
               value: c.playerWhite.value,
@@ -39,7 +38,6 @@ class ControlPanel extends StatelessWidget {
 
           const Divider(height: 32),
 
-          /// flip orientation
           Obx(
             () => SwitchListTile.adaptive(
               title: const Text('Flip board'),
@@ -50,7 +48,6 @@ class ControlPanel extends StatelessWidget {
             ),
           ),
 
-          /// reset
           const SizedBox(height: 8),
           ElevatedButton.icon(
             onPressed: c.reset,
@@ -74,7 +71,7 @@ class ControlPanel extends StatelessWidget {
                           final prefix =
                               (i.isEven) ? '${(i ~/ 2) + 1}. ' : '   … ';
                           return Text(
-                            '$prefix${c.game.getHistory()[i]}',
+                            '$prefix${c.game.value.getHistory()[i]}',
                             style: textTheme.bodyMedium,
                           );
                         },

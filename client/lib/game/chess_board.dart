@@ -28,6 +28,31 @@ class _ChessBoardState extends State<ChessBoard> {
   String? _lastTo;
   final List<String> _dragTargets = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _syncLastMove();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChessBoard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.historyCount != oldWidget.historyCount) {
+      _syncLastMove();
+    }
+  }
+
+  void _syncLastMove() {
+    final List moves = widget.game.getHistory({'verbose': true});
+    if (moves.isNotEmpty) {
+      final Map last = moves.last as Map<String, dynamic>;
+      setState(() {
+        _lastFrom = last['from'] as String?;
+        _lastTo = last['to'] as String?;
+      });
+    }
+  }
+
   String _indexToSquare(int index) {
     final rank = widget.orientationWhite ? 7 - index ~/ 8 : index ~/ 8;
     final file = widget.orientationWhite ? index % 8 : 7 - index % 8;

@@ -65,7 +65,7 @@ class ControlPanel extends StatelessWidget {
                   c.historyVersion.value == 0
                       ? SizedBox.shrink()
                       : ListView.builder(
-                        itemCount: c.historyVersion.value,
+                        itemCount: c.game.value.getHistory().length,
                         itemBuilder: (_, i) {
                           final ply = i + 1;
                           final prefix =

@@ -1,16 +1,28 @@
-import 'package:client/settings/settings.controller.dart';
+import 'package:client/app/settings/settings.controller.dart';
+import 'package:client/db/model/game_history.dart';
+import 'package:client/db/service/game_history.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'app/routes/app_pages.dart';
-import 'app/routes/app_routes.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'routes/app_pages.dart';
+import 'routes/app_routes.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
   Get.put(SettingsController(), permanent: true);
+
+  // ================ HIVE ==================
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(GameHistoryAdapter());
+
+  await Get.putAsync<GameHistoryService>(() => GameHistoryService().init());
+
   runApp(const KWChessApp());
 }
 

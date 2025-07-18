@@ -1,4 +1,4 @@
-import 'package:client/app/routes/app_routes.dart';
+import 'package:client/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,4 +1,4 @@
-import 'package:client/settings/board_color_scheme.dart';
+import 'package:client/app/settings/board_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

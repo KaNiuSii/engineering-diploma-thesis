@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chess/chess.dart' as ch;
-import 'package:client/settings/board_color_scheme.dart';
+import 'package:client/app/settings/board_color_scheme.dart';
 
 class ChessBoard extends StatefulWidget {
   const ChessBoard({
@@ -10,6 +10,7 @@ class ChessBoard extends StatefulWidget {
     required this.historyCount, //only for obx xd
     this.orientationWhite = true,
     required this.madeMove,
+    required this.gameStarted,
   });
 
   final ch.Chess game;
@@ -18,6 +19,8 @@ class ChessBoard extends StatefulWidget {
   final Function madeMove;
 
   final int historyCount;
+
+  final bool gameStarted;
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
@@ -89,7 +92,10 @@ class _ChessBoardState extends State<ChessBoard> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final double tile = constraints.maxWidth / 8;
-          return Stack(children: [_buildBoard(tile), _buildLabels()]);
+          return AbsorbPointer(
+            absorbing: !widget.gameStarted,
+            child: Stack(children: [_buildBoard(tile), _buildLabels()]),
+          );
         },
       ),
     );
@@ -240,7 +246,7 @@ class _ChessBoardState extends State<ChessBoard> {
     );
 
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 180),
+      duration: const Duration(milliseconds: 500),
       switchInCurve: Curves.easeOutBack,
       switchOutCurve: Curves.easeInBack,
       transitionBuilder:

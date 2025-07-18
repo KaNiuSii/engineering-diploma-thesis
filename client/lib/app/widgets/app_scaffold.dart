@@ -1,6 +1,5 @@
-import 'package:client/widgets/side_menu.dart';
+import 'package:client/app/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AppScaffold extends StatelessWidget {
   final Widget body;

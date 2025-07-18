@@ -1,11 +1,11 @@
-import 'package:client/game/game.bindings.dart';
-import 'package:client/game/game.page.dart';
-import 'package:client/history/history.bindings.dart';
-import 'package:client/history/history.page.dart';
-import 'package:client/home/home.bindings.dart';
-import 'package:client/home/home.page.dart';
-import 'package:client/settings/settings.bindings.dart';
-import 'package:client/settings/settings.page.dart';
+import 'package:client/app/game/game.bindings.dart';
+import 'package:client/app/game/game.page.dart';
+import 'package:client/app/history/history.bindings.dart';
+import 'package:client/app/history/history.page.dart';
+import 'package:client/app/home/home.bindings.dart';
+import 'package:client/app/home/home.page.dart';
+import 'package:client/app/settings/settings.bindings.dart';
+import 'package:client/app/settings/settings.page.dart';
 import 'package:get/get.dart';
 import 'app_routes.dart';
 

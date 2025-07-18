@@ -1,7 +1,6 @@
-import 'package:client/settings/board_color_scheme.dart';
-import 'package:client/settings/color_scheme_preview.dart';
-import 'package:client/widgets/app_scaffold.dart';
-import 'package:client/widgets/side_menu.dart';
+import 'package:client/app/settings/board_color_scheme.dart';
+import 'package:client/app/settings/color_scheme_preview.dart';
+import 'package:client/app/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'settings.controller.dart';

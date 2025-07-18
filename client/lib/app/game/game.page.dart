@@ -1,7 +1,7 @@
-import 'package:client/game/chess_board.dart';
-import 'package:client/game/control_panel.dart';
-import 'package:client/settings/settings.controller.dart';
-import 'package:client/widgets/app_scaffold.dart';
+import 'package:client/app/game/chess_board.dart';
+import 'package:client/app/game/control_panel.dart';
+import 'package:client/app/settings/settings.controller.dart';
+import 'package:client/app/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'game.controller.dart';
@@ -24,6 +24,7 @@ class GamePage extends GetView<GameController> {
                   madeMove: controller.madeMove,
                   orientationWhite: controller.whiteAtBottom.value,
                   historyCount: controller.historyVersion.value,
+                  gameStarted: controller.gameStarted.value,
                 ),
               ),
             ),

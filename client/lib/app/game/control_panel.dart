@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:chess/chess.dart' as ch;
 import 'game.controller.dart';
 
 class ControlPanel extends StatelessWidget {
@@ -22,37 +21,56 @@ class ControlPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Controls', style: textTheme.titleLarge),
-          const SizedBox(height: 12),
-
-          Obx(
-            () => DropdownButton<bool>(
-              value: c.playerWhite.value,
-              isExpanded: true,
-              items: const [
-                DropdownMenuItem(value: true, child: Text('Play White')),
-                DropdownMenuItem(value: false, child: Text('Play Black')),
-              ],
-              onChanged: (x) => c.changeSide(),
-            ),
-          ),
-
           const Divider(height: 32),
+          Text('Game', style: textTheme.titleMedium),
 
           Obx(
-            () => SwitchListTile.adaptive(
-              title: const Text('Flip board'),
-              value: !c.whiteAtBottom.value,
-              onChanged: (_) => c.flipBoard(),
-              dense: true,
-              contentPadding: EdgeInsets.zero,
+            () => Center(
+              child: DropdownButton<bool>(
+                value: c.playerWhite.value,
+                isExpanded: true,
+                items: const [
+                  DropdownMenuItem(value: true, child: Text('Play White')),
+                  DropdownMenuItem(value: false, child: Text('Play Black')),
+                ],
+                onChanged: c.gameStarted.value ? null : (x) => c.changeSide(),
+              ),
             ),
           ),
 
           const SizedBox(height: 8),
-          ElevatedButton.icon(
-            onPressed: c.reset,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Reset game'),
+
+          Obx(
+            () => Center(
+              child: FilledButton.icon(
+                onPressed: c.gameStarted.value ? null : () => c.startGame(),
+                label: Text('Start'),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Obx(
+            () => Center(
+              child: SwitchListTile.adaptive(
+                title: const Text('Flip board'),
+                value: !c.whiteAtBottom.value,
+                onChanged: (_) => c.flipBoard(),
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Center(
+            child: FilledButton.icon(
+              onPressed: c.reset,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Reset game'),
+            ),
           ),
 
           const Divider(height: 32),
@@ -67,7 +85,6 @@ class ControlPanel extends StatelessWidget {
                       : ListView.builder(
                         itemCount: c.game.value.getHistory().length,
                         itemBuilder: (_, i) {
-                          final ply = i + 1;
                           final prefix =
                               (i.isEven) ? '${(i ~/ 2) + 1}. ' : '   … ';
                           return Text(

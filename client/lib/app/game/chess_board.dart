@@ -216,12 +216,44 @@ class _ChessBoardState extends State<ChessBoard> {
     );
   }
 
-  Widget _buildDraggablePiece(ch.Piece piece, String square, double tile) {
-    final img = Image.asset(
-      _assetFor(piece),
-      fit: BoxFit.contain,
-      filterQuality: FilterQuality.none,
+  double getPieceWidthFactor(ch.Piece piece) {
+    switch (piece.type) {
+      case ch.PieceType.ROOK:
+        return 0.75;
+      case ch.PieceType.BISHOP:
+        return 0.65;
+      case ch.PieceType.KNIGHT:
+        return 0.6;
+      case ch.PieceType.KING:
+        return 0.65;
+      case ch.PieceType.QUEEN:
+        return 0.7;
+      default:
+        return 0.65;
+    }
+  }
+
+  Widget buildPiece(ch.Piece piece) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: FractionallySizedBox(
+          widthFactor: getPieceWidthFactor(piece),
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Image.asset(
+              _assetFor(piece),
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+        ),
+      ),
     );
+  }
+
+  Widget _buildDraggablePiece(ch.Piece piece, String square, double tile) {
+    final img = buildPiece(piece);
 
     final draggable = Draggable<String>(
       key: ValueKey(square),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chess/chess.dart' as ch;
 import 'package:client/app/settings/board_color_scheme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChessBoard extends StatefulWidget {
   const ChessBoard({
@@ -217,6 +218,7 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   double getPieceWidthFactor(ch.Piece piece) {
+    return 0.55;
     switch (piece.type) {
       case ch.PieceType.ROOK:
         return 0.75;
@@ -225,9 +227,9 @@ class _ChessBoardState extends State<ChessBoard> {
       case ch.PieceType.KNIGHT:
         return 0.6;
       case ch.PieceType.KING:
-        return 0.65;
+        return 0.6;
       case ch.PieceType.QUEEN:
-        return 0.7;
+        return 0.6;
       default:
         return 0.65;
     }
@@ -235,7 +237,7 @@ class _ChessBoardState extends State<ChessBoard> {
 
   Widget buildPiece(ch.Piece piece) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
+      padding: const EdgeInsets.only(bottom: 13),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: FractionallySizedBox(
@@ -308,7 +310,7 @@ class _ChessBoardState extends State<ChessBoard> {
                             widget.orientationWhite
                                 ? files[col]
                                 : files.reversed.toList()[col],
-                            style: TextStyle(
+                            style: GoogleFonts.roboto(
                               fontSize: 20,
                               color: widget.colorScheme.labels,
                             ),

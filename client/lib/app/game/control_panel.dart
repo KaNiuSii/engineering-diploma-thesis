@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'game.controller.dart';
 
 class ControlPanel extends StatelessWidget {
@@ -71,6 +72,18 @@ class ControlPanel extends StatelessWidget {
               icon: const Icon(Icons.refresh),
               label: const Text('Reset game'),
             ),
+          ),
+
+          Obx(
+            () =>
+                c.aiThinking.value
+                    ? Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: Colors.white,
+                        size: 200,
+                      ),
+                    )
+                    : SizedBox.shrink(),
           ),
 
           const Divider(height: 32),

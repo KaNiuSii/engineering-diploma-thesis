@@ -42,4 +42,4 @@ flutter:
 
   assets:
     - assets/pieces/
-    - assets/bots/value_net.onnx
+    # - assets/bots/value_net.onnx

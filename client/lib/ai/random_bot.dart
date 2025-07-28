@@ -16,7 +16,7 @@ class RandomBot implements IBot {
   }
 
   @override
-  ch.Move playMove(ch.Chess game) {
+  Future<ch.Move> playMove(ch.Chess game) async {
     final mv = chooseMove(game);
     return mv;
   }

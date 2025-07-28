@@ -1,3 +1,4 @@
+import 'package:client/ai/api_bot.dart';
 import 'package:client/ai/i_bot.dart';
 import 'package:client/ai/random_bot.dart';
 import 'package:client/db/model/game_history.dart';
@@ -16,7 +17,7 @@ class GameController extends GetxController {
 
   final RxInt historyVersion = 0.obs;
 
-  final Rx<IBot> aiBot = RandomBot().obs;
+  final Rx<IBot> aiBot = ApiBot().obs;
 
   final RxBool aiThinking = false.obs;
 
@@ -78,7 +79,7 @@ class GameController extends GetxController {
       return;
     }
     aiThinking.value = true;
-    game.value.move(aiBot.value.playMove(game.value));
+    game.value.move(await aiBot.value.playMove(game.value));
     aiThinking.value = false;
     historyVersion.value++;
     return Future.value();

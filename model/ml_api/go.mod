@@ -1,4 +1,4 @@
-module manual-eval-api
+module ml-api
 
 go 1.24.5
 

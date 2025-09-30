@@ -218,7 +218,7 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   double getPieceWidthFactor(ch.Piece piece) {
-    return 0.55;
+    return 1.2;
     switch (piece.type) {
       case ch.PieceType.ROOK:
         return 0.75;
@@ -237,13 +237,13 @@ class _ChessBoardState extends State<ChessBoard> {
 
   Widget buildPiece(ch.Piece piece) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 13),
+      padding: const EdgeInsets.only(bottom: 5),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: FractionallySizedBox(
-          widthFactor: getPieceWidthFactor(piece),
+          // widthFactor: getPieceWidthFactor(piece),
           child: FittedBox(
-            fit: BoxFit.fitWidth,
+            fit: BoxFit.fill,
             child: Image.asset(
               _assetFor(piece),
               filterQuality: FilterQuality.high,
